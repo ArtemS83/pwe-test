@@ -1,0 +1,14 @@
+.addTodoForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  button {
+    margin-left: 10px;
+  }
+  & > .MuiInputBase-input .MuiOutlinedInput-input {
+    padding-left: 10px;
+  }
+}
