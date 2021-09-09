@@ -2,28 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import AddTodoForm from './components/AddTodoForm/AddTodoForm';
 import TodoList from './components/TodoList/TodoList';
+import SortButtons from './components/SortButtons/SortButtons';
 import apiServices from './services/todoApi';
-
-interface INewTodo {
-  description: string;
-}
-
-interface ITodo {
-  id: string;
-  description: string;
-  isDone: boolean;
-}
-
-interface ITodoStatus {
-  isDone: boolean;
-}
+import { ITodo, INewTodo, ITodoStatus } from './interfaces/Todo.interface';
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
+
   const [toggleChecked, setToggleChecked] = useState<boolean>(false);
 
+  const [showTodos, setShowTodos] = useState<ITodo[]>([]);
+
+  const [sortBy, setSortBys] = useState<string>('all');
+
   useEffect(() => {
-    apiServices.getTodos().then(({ data }) => setTodos(data.todos));
+    apiServices.getTodos().then(({ data }) => {
+      setTodos(data.todos), setShowTodos(data.todos);
+    });
   }, []);
 
   const addTodoHandler = async (text: string) => {
@@ -58,11 +53,61 @@ const App: React.FC = () => {
     await apiServices.deleteTodo(todoId);
   };
 
+  useEffect(() => {
+    if (sortBy === 'all') {
+      setShowTodos(todos);
+    }
+    if (sortBy === 'completed') {
+      setShowTodos(CompletedTodos);
+    }
+    if (sortBy === 'notCompleted') {
+      setShowTodos(NotCompletedTodos);
+    }
+  }, [todos, sortBy]);
+
+  const CompletedTodos = todos.filter(({ isDone }) => isDone);
+  const NotCompletedTodos = todos.filter(({ isDone }) => !isDone);
+
+  const allTodosQuantity = todos.length;
+  const completedTodosQuantity = todos.filter(({ isDone }) => isDone).length;
+  const notCompletedTodosQuantity = todos.filter(
+    ({ isDone }) => !isDone,
+  ).length;
+
+  const groupOfTodosForButtons = {
+    allTodosQuantity,
+    completedTodosQuantity,
+    notCompletedTodosQuantity,
+  };
+
+  const chooseCompletedHandler = async (value: string | null) => {
+    switch (value) {
+      case 'all':
+        setSortBys(value);
+        setShowTodos(todos);
+        return;
+      case 'completed':
+        setSortBys(value);
+        setShowTodos(CompletedTodos);
+        return;
+      case 'notCompleted':
+        setSortBys(value);
+        setShowTodos(NotCompletedTodos);
+        return;
+      default:
+        return;
+    }
+  };
+
   return (
     <Container>
       <AddTodoForm onSubmit={addTodoHandler} />
+      <SortButtons
+        todosItems={groupOfTodosForButtons}
+        onClickBySort={chooseCompletedHandler}
+      />
       <TodoList
-        todos={todos}
+        todos={showTodos}
         onDeleteTodo={deleteTodoHandler}
         onToggleCompleted={toggleCompletedHandler}
       />

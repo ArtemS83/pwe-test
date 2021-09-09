@@ -1,0 +1,12 @@
+.buttonsWrapper {
+  & .checked.selected {
+    background-color: #3f51b5;
+    color: #fff;
+  }
+
+  button {
+    &:hover {
+      color: rgb(156, 163, 231);
+    }
+  }
+}

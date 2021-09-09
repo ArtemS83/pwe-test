@@ -1,14 +1,7 @@
 import axios from 'axios';
+import { INewTodo, ITodoStatus } from '../interfaces/Todo.interface';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/todos';
-
-interface INewTodo {
-  description: string;
-}
-
-interface ITodoStatus {
-  isDone: boolean;
-}
 
 const getTodos = () => {
   return axios

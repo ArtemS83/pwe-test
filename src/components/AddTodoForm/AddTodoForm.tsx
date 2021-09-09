@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-
+import { ITodoFormProps } from '../../interfaces/Todo.interface';
 import styles from './AddTodoForm.module.scss';
-
-interface ITodoFormProps {
-  onSubmit(text: string): void;
-}
 
 const AddTodoForm: React.FC<ITodoFormProps> = ({ onSubmit }) => {
   const [text, setText] = useState<string>('');
