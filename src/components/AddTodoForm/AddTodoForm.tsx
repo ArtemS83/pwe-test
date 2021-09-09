@@ -18,6 +18,10 @@ const AddTodoForm: React.FC<ITodoFormProps> = ({ onSubmit }) => {
   const handelForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (text.trim().length === 0) return;
+    if (text.trim().length > 70) {
+      alert('Length text todo max 70!');
+      return;
+    }
     onSubmit(text);
     setText('');
   };
@@ -35,6 +39,7 @@ const AddTodoForm: React.FC<ITodoFormProps> = ({ onSubmit }) => {
         onChange={changeHandler}
         label="Enter Todo"
         variant="outlined"
+        className={styles.inputDiv}
       />
       <Button
         type="submit"

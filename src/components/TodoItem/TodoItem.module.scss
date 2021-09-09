@@ -1,0 +1,29 @@
+li.divItem {
+  display: inline-flex;
+  justify-content: space-between;
+  &:hover,
+  &:focus {
+    background-color: rgb(94, 199, 231);
+  }
+  &:hover label.Label,
+  &:focus label.Label {
+    color: black;
+  }
+}
+
+label.Label {
+  margin-right: 0;
+  width: calc(100% - 45px);
+  & span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+button.btnDel {
+  &:hover,
+  &:focus {
+    background-color: rgb(238, 97, 97);
+  }
+}

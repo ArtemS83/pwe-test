@@ -20,6 +20,7 @@ interface ITodoStatus {
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
+  const [toggleChecked, setToggleChecked] = useState<boolean>(false);
 
   useEffect(() => {
     apiServices.getTodos().then(({ data }) => setTodos(data.todos));
@@ -29,7 +30,6 @@ const App: React.FC = () => {
     const newTodo: INewTodo = {
       description: text,
     };
-
     await apiServices
       .addTodo(newTodo)
       .then(({ data }) => setTodos(prevTodos => [data.newTodo, ...prevTodos]));
@@ -42,7 +42,16 @@ const App: React.FC = () => {
       ),
     );
     await apiServices.updateTodo(todoId, body);
+    setToggleChecked(true);
   };
+
+  useEffect(() => {
+    if (toggleChecked) {
+      const idDoneTodos = todos.filter(({ isDone }) => isDone);
+      console.log('All completed todos', idDoneTodos);
+      setToggleChecked(false);
+    }
+  }, [toggleCompletedHandler]);
 
   const deleteTodoHandler = async (todoId: string) => {
     await setTodos(prevTodos => prevTodos.filter(todo => todo.id !== todoId));

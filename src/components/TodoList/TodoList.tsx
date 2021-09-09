@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { List } from '@material-ui/core';
 import TodoItem from '../TodoItem/TodoItem';
+import styles from './TodoList.module.scss';
 
 interface ITodo {
   id: string;

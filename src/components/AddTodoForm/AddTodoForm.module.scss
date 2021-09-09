@@ -4,11 +4,22 @@
   align-items: center;
   margin-top: 20px;
   margin-bottom: 20px;
+  div {
+    max-width: 450px;
+    width: 100%;
+  }
 
   button {
     margin-left: 10px;
   }
-  & > .MuiInputBase-input .MuiOutlinedInput-input {
+  .inputDiv input[type='text']:not(.browser-default) {
     padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    &:hover,
+    &:focus {
+      border: none;
+      box-shadow: none;
+    }
   }
 }

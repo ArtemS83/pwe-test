@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './TodoItem.module.scss';
 
 import {
   ListItem,
@@ -41,8 +42,9 @@ const TodoItem: React.FC<ITodoItemProps> = ({
 
   return (
     <>
-      <ListItem divider>
+      <ListItem divider className={styles.divItem}>
         <FormControlLabel
+          className={styles.Label}
           control={
             <Checkbox
               checked={isDone}
@@ -57,6 +59,7 @@ const TodoItem: React.FC<ITodoItemProps> = ({
           type="button"
           onClick={handleDeleteTodo}
           title="Delete todo"
+          className={styles.btnDel}
         >
           <DeleteForever />
         </IconButton>
