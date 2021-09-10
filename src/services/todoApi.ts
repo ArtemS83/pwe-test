@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { INewTodo, ITodoStatus } from '../interfaces/Todo.interface';
 
-axios.defaults.baseURL = 'http://localhost:3000/api/todos';
-// axios.defaults.baseURL = 'https://pwe-rest-api.herokuapp.com/api/todos';
+// axios.defaults.baseURL = 'http://localhost:3000/api/todos';
+axios.defaults.baseURL = 'https://pwe-rest-api.herokuapp.com/api/todos';
 
 const getTodos = () => {
   return axios
