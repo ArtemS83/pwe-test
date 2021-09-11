@@ -17,16 +17,28 @@ const App: React.FC = () => {
 
   useEffect(() => {
     apiServices.getTodos().then(({ data }) => {
-      setTodos(data.todos), setShowTodos(data.todos);
+      setTodos(data.todos);
     });
   }, []);
 
+  useEffect(() => {
+    if (sortBy === 'all') {
+      setShowTodos(todos);
+    }
+    if (sortBy === 'completed') {
+      setShowTodos(CompletedTodos);
+    }
+    if (sortBy === 'notCompleted') {
+      setShowTodos(NotCompletedTodos);
+    }
+  }, [todos, sortBy]);
+
   const addTodoHandler = async (text: string) => {
-    const newTodo: INewTodo = {
+    const todoNew: INewTodo = {
       description: text,
     };
     await apiServices
-      .addTodo(newTodo)
+      .addTodo(todoNew)
       .then(({ data }) => setTodos(prevTodos => [data.newTodo, ...prevTodos]));
   };
 
@@ -42,8 +54,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (toggleChecked) {
-      const idDoneTodos = todos.filter(({ isDone }) => isDone);
-      console.log('All completed todos', idDoneTodos);
+      console.log('All completed todos', CompletedTodos);
       setToggleChecked(false);
     }
   }, [toggleCompletedHandler]);
@@ -53,46 +64,25 @@ const App: React.FC = () => {
     await apiServices.deleteTodo(todoId);
   };
 
-  useEffect(() => {
-    if (sortBy === 'all') {
-      setShowTodos(todos);
-    }
-    if (sortBy === 'completed') {
-      setShowTodos(CompletedTodos);
-    }
-    if (sortBy === 'notCompleted') {
-      setShowTodos(NotCompletedTodos);
-    }
-  }, [todos, sortBy]);
-
   const CompletedTodos = todos.filter(({ isDone }) => isDone);
   const NotCompletedTodos = todos.filter(({ isDone }) => !isDone);
 
-  const allTodosQuantity = todos.length;
-  const completedTodosQuantity = todos.filter(({ isDone }) => isDone).length;
-  const notCompletedTodosQuantity = todos.filter(
-    ({ isDone }) => !isDone,
-  ).length;
-
   const groupOfTodosForButtons = {
-    allTodosQuantity,
-    completedTodosQuantity,
-    notCompletedTodosQuantity,
+    allTodosQuantity: todos.length,
+    completedTodosQuantity: CompletedTodos.length,
+    notCompletedTodosQuantity: NotCompletedTodos.length,
   };
 
   const chooseCompletedHandler = async (value: string | null) => {
     switch (value) {
       case 'all':
         setSortBys(value);
-        setShowTodos(todos);
         return;
       case 'completed':
         setSortBys(value);
-        setShowTodos(CompletedTodos);
         return;
       case 'notCompleted':
         setSortBys(value);
-        setShowTodos(NotCompletedTodos);
         return;
       default:
         return;
